@@ -13,6 +13,7 @@ import axios from 'axios';
 import { formatDistanceToNow } from 'date-fns';
 import { ScrollArea } from "@/ui/scroll-area";
 import { Separator } from "@/ui/separator";
+import { API_BASE_URL } from "@/lib/utils";
 
 const mockTasks = [
     { description: "Initial Research & Wireframing", payout: "20%" },
@@ -161,7 +162,7 @@ const ActiveProjects = () => {
         const fetchActiveProjects = async () => {
             if (!user) return;
             try {
-                const response = await axios.get(`${import.meta.env.VITE_SERVER_API}/api/jobs/applications/${user.id}`);
+                const response = await axios.get(`${API_BASE_URL}/api/jobs/applications/${user.id}`);
                 const allApps = response.data.applications;
                 const activeApps = allApps.filter(app => ["Hired", "Work Submitted", "Shortlisted", "Interview"].includes(app.status));
 

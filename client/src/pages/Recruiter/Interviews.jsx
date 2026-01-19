@@ -14,6 +14,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { Input } from "@/ui/input";
 import { ScrollArea } from "@/ui/scroll-area";
 import { Separator } from "@/ui/separator";
+import { API_BASE_URL } from "@/lib/utils";
 
 // Mock tasks until backend integration is complete
 const mockTasks = [
@@ -40,7 +41,7 @@ const ActiveProjectsRecruiter = () => {
             // Fetch jobs posted by recruiter, then finding Hired/Active candidates
             try {
                 // 1. Get My Jobs
-                const jobsRes = await axios.get(`${import.meta.env.VITE_SERVER_API}/api/jobs/recruiter/${user.id}`);
+                const jobsRes = await axios.get(`${API_BASE_URL}/api/jobs/recruiter/${user.id}`);
                 const myJobs = jobsRes.data.jobs;
 
                 // 2. For each job, get applicants who are active
@@ -49,7 +50,7 @@ const ActiveProjectsRecruiter = () => {
 
                 await Promise.all(myJobs.map(async (job) => {
                     try {
-                        const appsRes = await axios.get(`${import.meta.env.VITE_SERVER_API}/api/jobs/${job._id}/applicants`);
+                        const appsRes = await axios.get(`${API_BASE_URL}/api/jobs/${job._id}/applicants`);
                         const applicants = appsRes.data.applicants;
 
                         const hiredOrActive = applicants.filter(app =>

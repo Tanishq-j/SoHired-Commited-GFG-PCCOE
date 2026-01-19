@@ -11,6 +11,7 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { formatDistanceToNow } from 'date-fns';
 import { toast } from "sonner"; // Assuming sonner is installed or handle alert
+import { API_BASE_URL } from "@/lib/utils";
 
 const Applications = () => {
     const [searchParams] = useSearchParams();
@@ -29,7 +30,7 @@ const Applications = () => {
             }
 
             try {
-                const response = await axios.get(`${import.meta.env.VITE_SERVER_API}/api/jobs/${jobId}/applicants`);
+                const response = await axios.get(`${API_BASE_URL}/api/jobs/${jobId}/applicants`);
                 setCandidates(response.data.applicants);
                 setJobStatus(response.data.jobStatus);
 
@@ -49,7 +50,7 @@ const Applications = () => {
 
     const handleStatusUpdate = async (applicantId, newStatus) => {
         try {
-            await axios.patch(`${import.meta.env.VITE_SERVER_API}/api/jobs/${jobId}/applicants/${applicantId}`, {
+            await axios.patch(`${API_BASE_URL}/api/jobs/${jobId}/applicants/${applicantId}`, {
                 status: newStatus
             });
             // Update local state
@@ -65,7 +66,7 @@ const Applications = () => {
         setAnalyzing((prev) => ({ ...prev, [candidateId]: true }));
         try {
             const response = await axios.patch(
-                `${import.meta.env.VITE_SERVER_API}/api/jobs/${jobId}/applicants/${candidateId}/analyze`
+                `${API_BASE_URL}/api/jobs/${jobId}/applicants/${candidateId}/analyze`
             );
             const { score, summary, pros } = response.data;
 
@@ -89,7 +90,7 @@ const Applications = () => {
     const handleJobAction = async (action) => {
         // action: "SubmissionOpen", "Closed"
         try {
-            await axios.post(`${import.meta.env.VITE_SERVER_API}/api/jobs/update`, {
+            await axios.post(`${API_BASE_URL}/api/jobs/update`, {
                 jobId: jobId,
                 status: action
             });
@@ -252,8 +253,8 @@ const Applications = () => {
                                                                     <span className="font-semibold text-sm text-purple-900 dark:text-purple-100">AI Scorecard</span>
                                                                 </div>
                                                                 <Badge className={`${candidate.aiScore >= 8 ? "bg-green-500 hover:bg-green-600" :
-                                                                        candidate.aiScore >= 5 ? "bg-yellow-500 hover:bg-yellow-600" :
-                                                                            "bg-red-500 hover:bg-red-600"
+                                                                    candidate.aiScore >= 5 ? "bg-yellow-500 hover:bg-yellow-600" :
+                                                                        "bg-red-500 hover:bg-red-600"
                                                                     } text-white border-0`}>
                                                                     {candidate.aiScore}/10
                                                                 </Badge>

@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import axios from 'axios';
 import { format } from 'date-fns';
+import { API_BASE_URL } from '@/lib/utils';
 
 const ManageJobs = () => {
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ const ManageJobs = () => {
             if (!user) return;
             try {
                 // Fetch using the new route: /api/jobs/posted/:recruiterId
-                const response = await axios.get(`${import.meta.env.VITE_SERVER_API}/api/jobs/posted/${user.id}`);
+                const response = await axios.get(`${API_BASE_URL}/api/jobs/posted/${user.id}`);
                 setJobs(response.data);
             } catch (error) {
                 console.error("Error fetching jobs:", error);

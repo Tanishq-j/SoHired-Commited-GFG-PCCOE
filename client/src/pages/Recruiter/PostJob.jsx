@@ -12,6 +12,7 @@ import { format } from "date-fns";
 import { CalendarIcon, Loader2, DollarSign, Clock, Code2, FileText, UploadCloud, Trash2, Plus } from "lucide-react";
 import axios from 'axios';
 import { useUser } from '@clerk/clerk-react';
+import { API_BASE_URL } from "@/lib/utils";
 
 const PostJob = () => {
     const navigate = useNavigate();
@@ -111,13 +112,13 @@ const PostJob = () => {
 
             if (isEditMode && jobId) {
                 // Update existing job
-                await axios.post(`${import.meta.env.VITE_SERVER_API}/api/jobs/update`, {
+                await axios.post(`${API_BASE_URL}/api/jobs/update`, {
                     jobId: jobId,
                     ...payload
                 });
             } else {
                 // Create new job
-                await axios.post(`${import.meta.env.VITE_SERVER_API}/api/jobs/post`, payload);
+                await axios.post(`${API_BASE_URL}/api/jobs/post`, payload);
             }
 
             navigate("/dashboard/recruiter/manage-jobs");

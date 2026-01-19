@@ -9,6 +9,7 @@ import { X, Briefcase, User, Loader2, Globe, MapPin, Building2 } from "lucide-re
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Card, CardContent } from "@/ui/card"
+import { API_BASE_URL } from "@/lib/utils"
 
 const rolesList = [
     "Frontend Developer", "Backend Developer", "Fullstack Developer",
@@ -209,7 +210,7 @@ const Onboarding = () => {
             }
 
             // 2. Save Detailed Profile to Backend
-            await axios.post(`${import.meta.env.VITE_SERVER_API}/api/user/onboarding`, {
+            await axios.post(`${API_BASE_URL}/api/user/onboarding`, {
                 clerkId: user.id,
                 firstName: user.firstName,
                 lastName: user.lastName,

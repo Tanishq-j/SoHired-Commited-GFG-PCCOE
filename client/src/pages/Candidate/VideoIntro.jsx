@@ -5,6 +5,7 @@ import { Video, Mic, StopCircle, Play, RotateCcw, Save, Loader2 } from "lucide-r
 import { toast } from "sonner";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
+import { API_BASE_URL } from "@/lib/utils";
 
 const VideoIntro = () => {
     const { user } = useUser();
@@ -75,7 +76,7 @@ const VideoIntro = () => {
             setVideoBlob(blob);
             const url = URL.createObjectURL(blob);
             setVideoUrl(url);
-            
+
             // Stop camera stream after recording to show preview
             if (videoRef.current) {
                 videoRef.current.srcObject = null;
@@ -101,14 +102,14 @@ const VideoIntro = () => {
 
     const saveRecording = async () => {
         if (!videoBlob || !user) return;
-        
+
         setUploading(true);
         const formData = new FormData();
         formData.append("video", videoBlob, "pitch.webm");
         formData.append("userId", user.id);
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_SERVER_API}/api/upload/video`, formData, {
+            const response = await axios.post(`${API_BASE_URL}/api/upload/video`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -144,19 +145,19 @@ const VideoIntro = () => {
                             <span className="text-9xl font-bold text-white animate-ping">{countdown}</span>
                         </div>
                     )}
-                    
+
                     {videoUrl ? (
-                        <video 
-                            src={videoUrl} 
-                            controls 
-                            className="w-full h-full object-cover" 
+                        <video
+                            src={videoUrl}
+                            controls
+                            className="w-full h-full object-cover"
                         />
                     ) : (
-                        <video 
-                            ref={videoRef} 
-                            autoPlay 
-                            muted 
-                            className="w-full h-full object-cover transform scale-x-[-1]" 
+                        <video
+                            ref={videoRef}
+                            autoPlay
+                            muted
+                            className="w-full h-full object-cover transform scale-x-[-1]"
                         />
                     )}
 
@@ -166,7 +167,7 @@ const VideoIntro = () => {
                             <p>Camera Off</p>
                         </div>
                     )}
-                    
+
                     {recording && (
                         <div className="absolute top-4 right-4 flex items-center gap-2 bg-red-500/90 text-white px-3 py-1 rounded-full text-sm font-medium animate-pulse">
                             <div className="w-2 h-2 bg-white rounded-full"></div>
@@ -180,7 +181,7 @@ const VideoIntro = () => {
                     <Card>
                         <CardHeader>
                             <CardTitle>Tips for a Great Pitch</CardTitle>
-                        </CardHeader> 
+                        </CardHeader>
                         <CardContent className="space-y-4 text-sm text-neutral-600 dark:text-neutral-400">
                             <ul className="list-disc pl-4 space-y-2">
                                 <li><strong>Introduce yourself</strong> clearly (Name, Role).</li>

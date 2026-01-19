@@ -6,6 +6,7 @@ import { AnimatePresence } from "framer-motion";
 import { RefreshCcw, Sparkles, Target, Users, Zap } from "lucide-react";
 import { useCallback, useEffect, useState, useRef } from "react";
 import RecruiterDashboard from "./Recruiter/RecruiterDashboard";
+import { API_BASE_URL } from "@/lib/utils";
 
 const Dashboard = () => {
     const { user } = useUser();
@@ -28,7 +29,7 @@ const Dashboard = () => {
         swipeQueue.current = []; // Clear queue immediately to avoid duplicates
 
         try {
-            await axios.post(`${import.meta.env.VITE_SERVER_API}/api/jobs/batch-actions/${user.id}`, {
+            await axios.post(`${API_BASE_URL}/api/jobs/batch-actions/${user.id}`, {
                 actions: actionsToProcess
             });
             console.log("Batched swipes processed:", actionsToProcess.length);
@@ -51,7 +52,7 @@ const Dashboard = () => {
         setLoading(true);
         try {
             // Updated to fetch from the new feed endpoint
-            const response = await axios.get(`${import.meta.env.VITE_SERVER_API}/api/jobs/feed/${user.id}`, {
+            const response = await axios.get(`${API_BASE_URL}/api/jobs/feed/${user.id}`, {
                 params: { page, limit: 5 }
             });
             console.log(response);
@@ -81,7 +82,7 @@ const Dashboard = () => {
         if (direction === "right") {
             try {
                 console.log("👉 Applying to job:", job.title);
-                await axios.post(`${import.meta.env.VITE_SERVER_API}/api/jobs/apply`, {
+                await axios.post(`${API_BASE_URL}/api/jobs/apply`, {
                     jobId: job.id,
                     userId: user.id
                 });

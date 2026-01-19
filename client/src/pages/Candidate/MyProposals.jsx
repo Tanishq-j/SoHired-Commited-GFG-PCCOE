@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
 import { Textarea } from "@/ui/textarea";
+import { API_BASE_URL } from "@/lib/utils";
 
 const MyProposals = () => {
     const { user } = useUser();
@@ -24,7 +25,7 @@ const MyProposals = () => {
         const fetchProposals = async () => {
             if (!user) return;
             try {
-                const response = await axios.get(`${import.meta.env.VITE_SERVER_API}/api/jobs/applications/${user.id}`);
+                const response = await axios.get(`${API_BASE_URL}/api/jobs/applications/${user.id}`);
                 setProposals(response.data.applications);
             } catch (error) {
                 console.error("Error fetching proposals:", error);
@@ -44,7 +45,7 @@ const MyProposals = () => {
     const handleSubmitWork = async () => {
         if (!selectedJobId || !submissionLink) return;
         try {
-            await axios.post(`${import.meta.env.VITE_SERVER_API}/api/jobs/submit-work`, {
+            await axios.post(`${API_BASE_URL}/api/jobs/submit-work`, {
                 jobId: selectedJobId,
                 userId: user.id,
                 submissionLink,
